@@ -18,6 +18,6 @@ fun ProgressBar.hide() {
     visibility = View.GONE
 }
 
-fun print(message: String) {
+fun print(message: String){
     Log.d("ghosh", message)
 }

@@ -1,37 +1,37 @@
 package com.jyotirmayg.mvvmsample.data.network
 
-import okhttp3.ResponseBody
-import retrofit2.Call
+import com.jyotirmayg.mvvmsample.data.network.response.AuthResponse
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
-interface APICalls {
+interface MyAPICalls {
 
     @FormUrlEncoded
     @POST("login")
-    fun userLogin(
+    suspend fun userLogin(
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<ResponseBody>
+    ): Response<AuthResponse>
 
     @FormUrlEncoded
     @POST("signup")
-    fun userSignup(
+    suspend fun userSignup(
         @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<ResponseBody>
+    ): Response<AuthResponse>
 
     companion object {
-        operator fun invoke(): APICalls {
+        operator fun invoke(): MyAPICalls {
             return Retrofit.Builder()
                 .baseUrl("https://api.simplifiedcoding.in/course-apis/mvvm/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(APICalls::class.java)
+                .create(MyAPICalls::class.java)
         }
     }
 }

@@ -1,12 +1,11 @@
 package com.jyotirmayg.mvvmsample.ui.auth
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.jyotirmayg.mvvmsample.R
+import com.jyotirmayg.mvvmsample.data.db.entities.User
 import com.jyotirmayg.mvvmsample.databinding.ActivityLoginBinding
 import com.jyotirmayg.mvvmsample.util.hide
 import com.jyotirmayg.mvvmsample.util.print
@@ -20,8 +19,7 @@ class LoginActivity : AppCompatActivity(), AuthListener {
 
         val viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
 
-        val binding: ActivityLoginBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_login)
+        val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.viewmodel = viewModel
 
         viewModel.authListener = this
@@ -31,12 +29,9 @@ class LoginActivity : AppCompatActivity(), AuthListener {
         progress_circular.show()
     }
 
-    override fun onSuccess(result: LiveData<String>) {
-        result.observe(this, Observer {
-            progress_circular.hide()
-            toast(it)
-            print(it)
-        })
+    override fun onSuccess(user: User) {
+        progress_circular.hide()
+        toast("${user.name}")
     }
 
     override fun onFailure(message: String) {

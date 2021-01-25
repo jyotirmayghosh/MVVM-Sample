@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.View
 import androidx.lifecycle.ViewModel
 import com.jyotirmayg.mvvmsample.data.repositories.UserRepository
+import com.jyotirmayg.mvvmsample.util.Coroutines
 
 class AuthViewModel : ViewModel() {
 
@@ -20,8 +21,16 @@ class AuthViewModel : ViewModel() {
             return
         }
 
-        val loginResult = UserRepository().userLogin(email!!, password!!)
-        authListener?.onSuccess(loginResult)
+
+        //Add coroutine for long running task :: Network calls
+        Coroutines.main {
+            val response = UserRepository().userLogin(email!!, password!!)
+            if (response.isSuccessful){
+                authListener?.onSuccess(response.body()?.user!!)
+            } else {
+                authListener?.onFailure("Error: ${response.code()}")
+            }
+        }
     }
 
     fun doSignupButtonClicked(view: View) {
@@ -35,7 +44,13 @@ class AuthViewModel : ViewModel() {
             return
         }
 
-        val signupResult = UserRepository().userSignup(name!!, email!!, password!!)
-        authListener?.onSuccess(signupResult)
+        Coroutines.main {
+            val response = UserRepository().userSignup(name!!, email!!, password!!)
+            if (response.isSuccessful){
+                authListener?.onSuccess(response.body()?.user!!)
+            } else{
+                authListener?.onFailure("Error: ${response.code()}")
+            }
+        }
     }
 }
