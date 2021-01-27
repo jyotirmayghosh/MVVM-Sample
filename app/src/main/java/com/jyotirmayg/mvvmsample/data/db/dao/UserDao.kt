@@ -1,4 +1,4 @@
-package com.jyotirmayg.mvvmsample.data.db
+package com.jyotirmayg.mvvmsample.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

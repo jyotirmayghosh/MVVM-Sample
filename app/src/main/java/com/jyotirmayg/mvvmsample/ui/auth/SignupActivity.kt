@@ -12,12 +12,19 @@ import com.jyotirmayg.mvvmsample.util.print
 import com.jyotirmayg.mvvmsample.util.show
 import com.jyotirmayg.mvvmsample.util.toast
 import kotlinx.android.synthetic.main.activity_signup.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 
-class SignupActivity : AppCompatActivity(), AuthListener {
+class SignupActivity : AppCompatActivity(), AuthListener, KodeinAware {
+
+    override val kodein by kodein()
+    private val factory: AuthViewModelFactor by instance<AuthViewModelFactor>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+        val viewModel = ViewModelProvider(this, factory).get(AuthViewModel::class.java)
         val binding: ActivitySignupBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_signup)
 
